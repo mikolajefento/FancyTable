@@ -1,1 +1,18 @@
-include ':sample', ':library'
+pluginManagement {
+    repositories {
+        google()
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        mavenLocal()
+    }
+}
+
+rootProject.name = "FancyTable"
+include ':library'
