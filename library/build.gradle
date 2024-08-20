@@ -1,5 +1,6 @@
 plugins {
     alias libs.plugins.android.library
+    id 'maven-publish'
 }
 
 group = "thiha.aung.fancytable"
@@ -7,11 +8,11 @@ version = "1.0.1"
 
 android {
     namespace = "thiha.aung.fancytable"
-    compileSdkVersion 34
+    compileSdk 34
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 34
+        minSdk 21
+        targetSdk 34
         versionCode 2
         versionName "1.0.1"
     }
@@ -22,8 +23,40 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    publishing {
+        multipleVariants {
+            allVariants()
+        }
+    }
 }
 
-dependencies {
-
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = 'thiha.aung.fancytable'
+            artifactId = 'fancytable'
+            version = '1.0.1'
+            artifact("$buildDir/outputs/aar/library-release.aar")
+        }
+    }
+    repositories {
+        mavenLocal()
+        maven {
+            name = "efentoMavenReleases"
+            url = uri("https://maven.efento.io/releases")
+            credentials {
+                username = System.getenv("REPO_USERNAME")
+                password = System.getenv("REPO_PASSWORD")
+            }
+        }
+        maven {
+            name = "efentoMavenSnapshots"
+            url = uri("https://maven.efento.io/snapshots")
+            credentials {
+                username = System.getenv("REPO_USERNAME")
+                password = System.getenv("REPO_PASSWORD")
+            }
+        }
+    }
 }
